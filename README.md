@@ -8,6 +8,7 @@ A browser game built with Three.js, inspired by the 16-bit helicopter games Dese
 |---|---|---|
 | `index.html` | 1 · Dragonfly Strike | A dragonfly gunship defends the Bug Kingdom from ant legions in a garden. Missions, winching, destructible garden, lawnmower, level-ups, bosses. |
 | `garden-front.html` | 2 · Garden Front | Air support over a live ant-vs-ladybug ground war. Five control points, a tug-of-war battle meter, command points, battalion drops, acorn artillery and bumblebee bombers. |
+| `rotorwash.html` | 3 · Rotorwash | Red-vs-blue combined-arms sim: fly an Apache over infantry, MG, AT, mortar, tank, AA and artillery units. Ragdoll physics, flying debris, flares vs SAMs, air assault / artillery / air strike call-ins. |
 
 ## Controls (Xbox)
 
