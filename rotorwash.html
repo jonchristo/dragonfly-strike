@@ -291,7 +291,7 @@ kbd{font-family:var(--mono);font-size:10px;border:1px solid var(--dim);border-bo
     <div class="padwrap">
       <svg viewBox="0 0 1000 470" class="padsvg" role="img" aria-label="Xbox controller button map">
         <g class="callouts">
-          <polyline points="345,96 300,96 290,52 250,52"/><text x="244" y="48" text-anchor="end"><tspan class="bt">LT</tspan> Rocket salvo</text>
+          <polyline points="345,96 300,96 290,52 250,52"/><text x="244" y="48" text-anchor="end"><tspan class="bt">LT (hold)</tspan> Strafe · lock heading</text>
           <polyline points="330,128 280,128 270,112 250,112"/><text x="244" y="108" text-anchor="end"><tspan class="bt">LB (hold)</tspan> Fire-support menu</text>
           <polyline points="370,215 250,196"/><text x="244" y="186" text-anchor="end"><tspan class="bt">Left stick</tspan> Fly</text><text x="244" y="206" text-anchor="end" class="sub">Click (L3) · Boost</text>
           <polyline points="430,305 250,290"/><text x="244" y="280" text-anchor="end"><tspan class="bt">D-pad</tspan> ◀ ▶ pick support</text><text x="244" y="300" text-anchor="end" class="sub">▼ call it · ▲ objectives</text>
@@ -319,7 +319,7 @@ kbd{font-family:var(--mono);font-size:10px;border:1px solid var(--dim);border-bo
       </svg>
     </div>
     <div class="supdemo"><span class="lbl">Hold LB, then</span><span><i class="gx">X</i> Air Assault</span><span><i class="gy">Y</i> Artillery</span><span><i class="gb">B</i> Air Strike</span><span class="lbl">Strikes land on the blue marker ahead of your nose</span></div>
-    <p class="tip kb"><b>Keyboard:</b> WASD fly · Q/E yaw · Shift or left click boost · Space/J gun · K rockets · L missile · G flares · 1–3 support · O objectives · P pause · M sound · N music</p>
+    <p class="tip kb"><b>Keyboard:</b> WASD fly · Q/E yaw · hold Z strafe · Shift or left click boost · Space/J gun · K rockets · L missile · G flares · 1–3 support · O objectives · P pause · M sound · N music</p>
     <div class="row"><button class="btn" id="bCtrlGo">Continue</button><span class="btnhint">A button · Enter</span></div>
   </div>
 </div>
@@ -1788,7 +1788,7 @@ function readInput() {
   let ix = 0, iy = 0; if (k.KeyA || k.ArrowLeft) ix -= 1; if (k.KeyD || k.ArrowRight) ix += 1; if (k.KeyW || k.ArrowUp) iy += 1; if (k.KeyS || k.ArrowDown) iy -= 1;
   ix += joy.x + pd.lx; iy += joy.y + pd.ly;
   let rot = 0; if (k.KeyQ) rot -= 1; if (k.KeyE) rot += 1; rot += pd.rot;
-  return { ix, iy, rot, aim: pd.aim, strafe: false,
+  return { ix, iy, rot, aim: pd.aim, strafe: !!(pd.strafe || k.KeyZ),
     gun: !!(k.Space || k.KeyJ || touchBtn.gun || pd.gun), rkt: !!(k.KeyK || touchBtn.rkt || pd.rkt), msl: !!(k.KeyL || touchBtn.msl || pd.msl) };
 }
 function updatePlayer(dt) {
@@ -2119,7 +2119,7 @@ addEventListener('gamepadconnected', e => { padIndex = e.gamepad.index; updatePa
 addEventListener('gamepaddisconnected', e => { if (e.gamepad.index === padIndex) { padIndex = null; updatePadStatus(null); } });
 function refreshKeycaps() {
   const on = padState.connected;
-  document.querySelectorAll('.k1').forEach(k => k.textContent = on ? 'RT' : 'J'); document.querySelectorAll('.k2').forEach(k => k.textContent = on ? 'LT' : 'K'); document.querySelectorAll('.k3').forEach(k => k.textContent = on ? 'RB' : 'L'); document.querySelectorAll('.k4').forEach(k => k.textContent = on ? 'B' : 'G');
+  document.querySelectorAll('.k1').forEach(k => k.textContent = on ? 'RT' : 'J'); document.querySelectorAll('.k2').forEach(k => k.textContent = on ? 'X' : 'K'); document.querySelectorAll('.k3').forEach(k => k.textContent = on ? 'RB' : 'L'); document.querySelectorAll('.k4').forEach(k => k.textContent = on ? 'B' : 'G');
   document.querySelectorAll('.ck').forEach((k, i) => { k.textContent = on ? ['X', 'Y', 'B'][i] : i + 1; k.className = 'ck' + (on ? ' ' + ['gx', 'gy', 'gb'][i] : ''); });
   if (el.supHint) el.supHint.textContent = on ? 'Hold LB · X / Y / B' : '1–3 call in · C cycle · F call';
 }
@@ -2145,7 +2145,7 @@ function pollPad(dt) {
   const lx = dz(ax(0)), ly = -dz(ax(1)), rx = ax(2), ry = -ax(3), rm = Math.hypot(rx, ry);
   const menu = state.mode === 'play' && b(4);
   padState.menu = menu; padState.lx = lx; padState.ly = ly; padState.aim = rm > .45 ? { x: rx / rm, y: ry / rm } : null; padState.rot = 0;
-  padState.gun = b(7); padState.rkt = b(6) || (!menu && b(2)); padState.msl = b(5) || (!menu && b(0));
+  padState.gun = b(7); padState.strafe = b(6); padState.rkt = !menu && b(2); padState.msl = b(5) || (!menu && b(0));
   const pressed = i => b(i) && !padState.prev[i];
   if (gp.buttons.some(x => x && x.pressed)) audioInit();
   if (state.mode !== 'play') {
