@@ -1127,6 +1127,7 @@ const timers = [];
 function later(t, fn) { timers.push({ t, fn }); }
 
 /* ================= state ================= */
+let pilotMode = true; try { pilotMode = localStorage.getItem('rw-flight') !== 'classic'; } catch (e) { }
 const state = { mode: 'title', stageIdx: 0, boss: null, pendingLv: 0, choices: [], sel: 0, reward: false };
 const pilot = { level: 1, xp: 0, score: 0, lives: 3, up: {} };
 let stats = { kills: 0, rescued: 0, props: 0, lost: 0, calls: 0 };
@@ -2136,7 +2137,6 @@ $('#tbCall').addEventListener('pointerdown', e => { e.preventDefault(); callIn(s
 $('#tbNext').addEventListener('pointerdown', e => { e.preventDefault(); cycleCall(1); });
 
 /* ================= input: Xbox gamepad ================= */
-let pilotMode = true; try { pilotMode = localStorage.getItem('rw-flight') !== 'classic'; } catch (e) { }
 const padState = { rsx: 0, lx: 0, ly: 0, aim: null, rot: 0, strafe: false, gun: false, rkt: false, msl: false, connected: false, prev: [], nav: 0 };
 let padIndex = null, padActuator = null;
 addEventListener('gamepadconnected', e => { padIndex = e.gamepad.index; updatePadStatus(e.gamepad); });
