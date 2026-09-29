@@ -205,6 +205,14 @@ kbd{font-family:var(--mono);font-size:10px;border:1px solid var(--dim);border-bo
 .supdemo{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;padding:10px 12px;border:1px solid var(--edge);margin-bottom:12px;font-size:15px}
 .supdemo i{margin-right:4px}
 .tip.kb{font-size:13px}
+.flightpick{margin:0 0 16px}
+.fp-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+.btn.fp{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;text-transform:none;letter-spacing:0;padding:10px 12px}
+.btn.fp b{font-family:var(--display);font-size:15px;letter-spacing:.12em;text-transform:uppercase}
+.btn.fp span{font-family:var(--body);font-weight:400;font-size:13px;color:var(--dim)}
+.btn.fp.on{border-color:var(--blue);background:rgba(76,141,255,.16)}
+.btn.fp.on b::after{content:" ✓";color:var(--blue)}
+@media (max-width:560px){.fp-opts{grid-template-columns:1fr}}
 @media (max-width:1000px){
   #battle,#bossbar{left:10px;transform:none;width:calc(100% - 160px);min-width:0}
   #feed{top:calc(52px + env(safe-area-inset-top,0px))}
@@ -279,7 +287,10 @@ kbd{font-family:var(--mono);font-size:10px;border:1px solid var(--dim);border-bo
     <h1 class="logo">ROTORWASH<span class="vs"><b>BLUE</b> VS <em>RED</em></span></h1>
     <p class="premise">Two armies fight for five objectives on an open test range. Riflemen, machine-gun teams, anti-tank crews, mortars, tanks and artillery on both sides. You fly the Blue gunship: clear the way with the 30 mm gun, rockets and guided missiles, call in air assaults, artillery and air strikes, and keep the balance tipped Blue.</p>
     <p class="tip"><b>Winning:</b> each side has a reserve pool. Every soldier or vehicle lost costs its side, and holding more objectives than the enemy bleeds their pool. Empty Red's pool to win. <b>Watch for SAMs:</b> when the MISSILE warning flashes, pop flares and break hard. Land on the FARP pad to rearm, refuel and drop off freed POWs.</p>
-    <div class="row"><button class="btn" id="bStart">Start simulation</button><button class="btn ghost" id="bCtrl">Controls</button><span class="btnhint">A button · Enter</span></div>
+    <div class="flightpick"><span class="lbl">Flight controls</span><div class="fp-opts">
+      <button class="btn ghost fp" id="fpPilot"><b>Pilot</b><span>Left stick: forward, back, strafe · right stick: rotate</span></button>
+      <button class="btn ghost fp" id="fpClassic"><b>Classic</b><span>Left stick: fly in screen directions · right stick: aim</span></button></div></div>
+    <div class="row"><button class="btn" id="bStart" data-focus>Start simulation</button><button class="btn ghost" id="bCtrl">Controls</button><span class="btnhint">A button · Enter</span></div>
     <div class="gp" id="gpStat"><i></i><span>No controller detected. Plug in an Xbox pad and press any button.</span></div>
   </div>
 </div>
@@ -293,7 +304,7 @@ kbd{font-family:var(--mono);font-size:10px;border:1px solid var(--dim);border-bo
         <g class="callouts">
           <polyline points="345,96 300,96 290,52 250,52"/><text x="244" y="48" text-anchor="end"><tspan class="bt">LT (hold)</tspan> Strafe · lock heading</text>
           <polyline points="330,128 280,128 270,112 250,112"/><text x="244" y="108" text-anchor="end"><tspan class="bt">LB (hold)</tspan> Fire-support menu</text>
-          <polyline points="370,215 250,196"/><text x="244" y="186" text-anchor="end"><tspan class="bt">Left stick</tspan> Fly</text><text x="244" y="206" text-anchor="end" class="sub">Click (L3) · Boost</text>
+          <polyline points="370,215 250,196"/><text x="244" y="186" text-anchor="end"><tspan class="bt">Left stick</tspan> <tspan id="lsTxt">Fly</tspan></text><text x="244" y="206" text-anchor="end" class="sub">Click (L3) · Boost</text>
           <polyline points="430,305 250,290"/><text x="244" y="280" text-anchor="end"><tspan class="bt">D-pad</tspan> ◀ ▶ pick support</text><text x="244" y="300" text-anchor="end" class="sub">▼ call it · ▲ objectives</text>
           <polyline points="462,214 300,380 250,380"/><text x="244" y="385" text-anchor="end"><tspan class="bt">View</tspan> Music on / off</text>
           <polyline points="655,96 700,96 710,52 750,52"/><text x="756" y="48"><tspan class="bt">RT</tspan> 30 mm chain gun</text>
@@ -302,7 +313,7 @@ kbd{font-family:var(--mono);font-size:10px;border:1px solid var(--dim);border-bo
           <polyline points="697,214 750,214"/><text x="756" y="218"><tspan class="gb">B</tspan> Flares</text>
           <polyline points="662,250 750,264"/><text x="756" y="268"><tspan class="ga">A</tspan> Guided missile</text>
           <polyline points="627,214 612,258 700,316 750,316"/><text x="756" y="320"><tspan class="gx">X</tspan> Rocket salvo</text>
-          <polyline points="590,305 640,368 750,368"/><text x="756" y="364"><tspan class="bt">Right stick</tspan> Aim and rotate</text><text x="756" y="384" class="sub">Click (R3) · Flares</text>
+          <polyline points="590,305 640,368 750,368"/><text x="756" y="364"><tspan class="bt">Right stick</tspan> <tspan id="rsTxt">Aim and rotate</tspan></text><text x="756" y="384" class="sub">Click (R3) · Flares</text>
           <polyline points="538,214 600,430 750,430"/><text x="756" y="434"><tspan class="bt">Menu</tspan> Pause</text>
         </g>
         <path class="body" d="M330 150C380 120 620 120 670 150C740 150 790 190 810 260C840 360 850 430 790 450C745 465 715 420 680 380C650 350 350 350 320 380C285 420 255 465 210 450C150 430 160 360 190 260C210 190 260 150 330 150Z"/>
@@ -319,8 +330,8 @@ kbd{font-family:var(--mono);font-size:10px;border:1px solid var(--dim);border-bo
       </svg>
     </div>
     <div class="supdemo"><span class="lbl">Hold LB, then</span><span><i class="gx">X</i> Air Assault</span><span><i class="gy">Y</i> Artillery</span><span><i class="gb">B</i> Air Strike</span><span class="lbl">Strikes land on the blue marker ahead of your nose</span></div>
-    <p class="tip kb"><b>Keyboard:</b> WASD fly · Q/E yaw · hold Z strafe · Shift or left click boost · Space/J gun · K rockets · L missile · G flares · 1–3 support · O objectives · P pause · M sound · N music</p>
-    <div class="row"><button class="btn" id="bCtrlGo">Continue</button><span class="btnhint">A button · Enter</span></div>
+    <p class="tip kb"><b>Keyboard:</b> WASD fly · Q/E yaw · T switch flight mode · hold Z strafe · Shift or left click boost · Space/J gun · K rockets · L missile · G flares · 1–3 support · O objectives · P pause · M sound · N music</p>
+    <div class="row"><button class="btn" id="bCtrlGo">Continue</button><button class="btn ghost" id="bFlight2">Flight: Pilot</button><span class="btnhint">A button · Enter</span></div>
   </div>
 </div>
 
@@ -369,7 +380,7 @@ kbd{font-family:var(--mono);font-size:10px;border:1px solid var(--dim);border-bo
     <p class="eyebrow">Simulation paused</p>
     <h2 class="logo" style="font-size:clamp(28px,5.5vw,48px)">HOLD</h2>
     <p class="tip" style="margin-top:14px">The strike marker sits on the ground 26 m ahead of the nose. Aim with the right stick, then hold LB and press X, Y or B. Friendly artillery and air strikes do not harm Blue units. Red SAM teams and AA vehicles are marked on the radar once they fire.</p>
-    <div class="row"><button class="btn" id="bResume">Resume</button><button class="btn ghost" id="bCtrl2">Controls</button><button class="btn ghost" id="bRestart">Restart scenario</button><button class="btn ghost" id="bMusic">Music: on</button><button class="btn ghost" id="bMute">Sound: on</button></div>
+    <div class="row"><button class="btn" id="bResume">Resume</button><button class="btn ghost" id="bFlight">Flight: Pilot</button><button class="btn ghost" id="bCtrl2">Controls</button><button class="btn ghost" id="bRestart">Restart scenario</button><button class="btn ghost" id="bMusic">Music: on</button><button class="btn ghost" id="bMute">Sound: on</button></div>
   </div>
 </div>
 
@@ -1795,8 +1806,11 @@ function updatePlayer(dt) {
   if (!P.alive) { updateCrash(dt); return; }
   const st = S(), inp = readInput(); P.inv = Math.max(0, P.inv - dt);
   let ix = inp.ix, iy = inp.iy, mag = Math.hypot(ix, iy); if (mag > 1) { ix /= mag; iy /= mag; mag = 1; }
-  const mx = camRight.x * ix + camFwd.x * iy, mz = camRight.z * ix + camFwd.z * iy;
-  if (inp.aim) { const ax = camRight.x * inp.aim.x + camFwd.x * inp.aim.y, az = camRight.z * inp.aim.x + camFwd.z * inp.aim.y; P.h += clamp(angDiff(P.h, Math.atan2(ax, az)), -5 * dt, 5 * dt); P.manualT = .5; }
+  let mx, mz;
+  if (pilotMode) { const fx0 = Math.sin(P.h), fz0 = Math.cos(P.h); mx = fx0 * iy - fz0 * ix; mz = fz0 * iy + fx0 * ix; }
+  else { mx = camRight.x * ix + camFwd.x * iy; mz = camRight.z * ix + camFwd.z * iy; }
+  if (pilotMode) { const r = clamp(inp.rot + padState.rsx, -1, 1); if (Math.abs(r) > .05) P.h -= r * Math.abs(r) * 3.2 * dt; P.manualT = 1; }
+  else if (inp.aim) { const ax = camRight.x * inp.aim.x + camFwd.x * inp.aim.y, az = camRight.z * inp.aim.x + camFwd.z * inp.aim.y; P.h += clamp(angDiff(P.h, Math.atan2(ax, az)), -5 * dt, 5 * dt); P.manualT = .5; }
   else if (Math.abs(inp.rot) > .05) { P.h -= inp.rot * 3 * dt; P.manualT = .8; }
   else if (P.manualT > 0) P.manualT -= dt;
   if (mag > .08) { P.vel.x += mx * 40 * mag * dt; P.vel.z += mz * 40 * mag * dt; if (!inp.strafe && P.manualT <= 0) P.h += clamp(angDiff(P.h, Math.atan2(mx, mz)), -3.4 * dt, 3.4 * dt); }
@@ -2011,7 +2025,7 @@ function drawRadar() {
 
 /* ================= screens & flow ================= */
 const screens = ['sTitle', 'sControls', 'sBrief', 'sLevel', 'sClear', 'sOver', 'sPause'];
-function show(id) { $('#' + id).hidden = false; const b = $('#' + id).querySelector('.btn, .upg'); if (b) try { b.focus({ preventScroll: true }); } catch (e) { } }
+function show(id) { $('#' + id).hidden = false; const b = $('#' + id).querySelector('[data-focus]') || $('#' + id).querySelector('.btn, .upg'); if (b) try { b.focus({ preventScroll: true }); } catch (e) { } }
 function hide(id) { $('#' + id).hidden = true; }
 function hideAll() { screens.forEach(hide); }
 const isTouch = matchMedia('(pointer: coarse)').matches;
@@ -2069,6 +2083,14 @@ $('#bCtrl').onclick = () => openControls('title');
 $('#bCtrl2').onclick = () => openControls('pause');
 $('#bCtrlGo').onclick = closeControls;
 $('#bMusic').onclick = toggleMusic;
+function applyFlightLabels() {
+  const t = 'Flight: ' + (pilotMode ? 'Pilot' : 'Classic'); $('#bFlight').textContent = t; $('#bFlight2').textContent = t;
+  $('#fpPilot').classList.toggle('on', pilotMode); $('#fpClassic').classList.toggle('on', !pilotMode);
+  $('#lsTxt').textContent = pilotMode ? 'Forward, back, strafe' : 'Fly (screen directions)'; $('#rsTxt').textContent = pilotMode ? 'Rotate' : 'Aim and rotate';
+}
+function toggleFlight() { pilotMode = !pilotMode; try { localStorage.setItem('rw-flight', pilotMode ? 'pilot' : 'classic'); } catch (e) { } applyFlightLabels(); setHint(pilotMode ? 'Pilot flight: stick moves relative to the nose' : 'Classic flight: stick moves in screen directions', 2); sfx.click(); }
+$('#fpPilot').onclick = () => { if (!pilotMode) toggleFlight(); }; $('#fpClassic').onclick = () => { if (pilotMode) toggleFlight(); };
+$('#bFlight').onclick = toggleFlight; $('#bFlight2').onclick = toggleFlight; applyFlightLabels();
 $('#bLaunch').onclick = launch;
 $('#bNext').onclick = () => startStage(state.stageIdx + 1);
 $('#bAgain').onclick = newGame;
@@ -2093,6 +2115,7 @@ addEventListener('keydown', e => {
   if (e.code === 'KeyP' || e.code === 'Escape') togglePause();
   if (e.code === 'KeyM') setMute(!AU.muted);
   if (e.code === 'KeyN') toggleMusic();
+  if (e.code === 'KeyT') toggleFlight();
   if ((e.code === 'ShiftLeft' || e.code === 'ShiftRight') && state.mode === 'play') boostReq = true;
   if (e.code === 'KeyO') $('#hud').classList.toggle('showorders');
 });
@@ -2113,7 +2136,8 @@ $('#tbCall').addEventListener('pointerdown', e => { e.preventDefault(); callIn(s
 $('#tbNext').addEventListener('pointerdown', e => { e.preventDefault(); cycleCall(1); });
 
 /* ================= input: Xbox gamepad ================= */
-const padState = { lx: 0, ly: 0, aim: null, rot: 0, strafe: false, gun: false, rkt: false, msl: false, connected: false, prev: [], nav: 0 };
+let pilotMode = true; try { pilotMode = localStorage.getItem('rw-flight') !== 'classic'; } catch (e) { }
+const padState = { rsx: 0, lx: 0, ly: 0, aim: null, rot: 0, strafe: false, gun: false, rkt: false, msl: false, connected: false, prev: [], nav: 0 };
 let padIndex = null, padActuator = null;
 addEventListener('gamepadconnected', e => { padIndex = e.gamepad.index; updatePadStatus(e.gamepad); });
 addEventListener('gamepaddisconnected', e => { if (e.gamepad.index === padIndex) { padIndex = null; updatePadStatus(null); } });
@@ -2144,7 +2168,7 @@ function pollPad(dt) {
   const b = i => !!(gp.buttons[i] && (gp.buttons[i].pressed || gp.buttons[i].value > .35)), ax = i => gp.axes[i] || 0;
   const lx = dz(ax(0)), ly = -dz(ax(1)), rx = ax(2), ry = -ax(3), rm = Math.hypot(rx, ry);
   const menu = state.mode === 'play' && b(4);
-  padState.menu = menu; padState.lx = lx; padState.ly = ly; padState.aim = rm > .45 ? { x: rx / rm, y: ry / rm } : null; padState.rot = 0;
+  padState.menu = menu; padState.lx = lx; padState.ly = ly; padState.aim = !pilotMode && rm > .45 ? { x: rx / rm, y: ry / rm } : null; padState.rot = 0; padState.rsx = pilotMode ? dz(rx, .15) : 0;
   padState.gun = b(7); padState.strafe = b(6); padState.rkt = !menu && b(2); padState.msl = b(5) || (!menu && b(0));
   const pressed = i => b(i) && !padState.prev[i];
   if (gp.buttons.some(x => x && x.pressed)) audioInit();
