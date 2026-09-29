@@ -466,91 +466,85 @@ const sfx = {
   boost() { noiseF(.45, .12, 1200, 'bandpass', 0, 1, 2.5); tone(180, .35, 'sawtooth', .03, 420); }
 };
 
-/* ================= adaptive orchestral battle score ================= */
-const MUS = { on: true, bpm: 76, level: 0, want: 0, wantT: 0, step: 0, next: 0, bus: null, jingle: 0, int: 0, vib: null };
-const BPMS = [72, 84, 94, 104];
-const SPB = 12; // triplet 8ths: 4 beats x 3
+/* ================= adaptive dance score ================= */
+const MUS = { on: true, bpm: 122, level: 0, want: 0, wantT: 0, step: 0, next: 0, bus: null, duck: null, jingle: 0, int: 0 };
+const BPMS = [120, 124, 128, 132];
 const midi = s => { const m = /^([A-G])([#b]?)(\d)$/.exec(s); return 12 * (+m[3] + 1) + { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 }[m[1]] + (m[2] === '#' ? 1 : m[2] === 'b' ? -1 : 0); };
 const hz = n => 440 * Math.pow(2, (n - 69) / 12);
-const THEME_SRC = 'D5 - E5 F5 | A5 - - G5 | F5 - D5 - | E5 - - - | D5 - E5 F5 | A5 - C6 - | Bb5 - A5 G5 | A5 - - - | D6 - - C6 | G5 - - E5 | F5 - E5 D5 | A5 - - - | G5 - A5 Bb5 | F5 - D5 F5 | E5 - C#5 E5 | A5 - - .';
-const THEME = (() => { const toks = THEME_SRC.split('|').map(b => b.trim().split(/\s+/)).flat(); const res = []; for (let i = 0; i < toks.length; i++) { const t = toks[i]; if (t === '-' || t === '.') { res.push(null); continue; } let len = 1; while (i + len < toks.length && toks[i + len] === '-') len++; res.push({ n: midi(t), len }); } return res; })();
-const PROG = ['Dm', 'Dm', 'Bb', 'C', 'Dm', 'F', 'Gm', 'A', 'Bb', 'C', 'Dm', 'Dm', 'Gm', 'Bb', 'A', 'A'];
-const ROOT = { Dm: 38, Bb: 34, C: 36, F: 41, Gm: 43, A: 33 };
-const CHORD = { Dm: [62, 65, 69], Bb: [58, 62, 65], C: [60, 64, 67], F: [60, 65, 69], Gm: [62, 67, 70], A: [61, 64, 69] };
+const HOOK_SRC = 'A5 - C6 - E6 D6 C6 - | A5 - - C6 - A5 G5 - | E5 - G5 - C6 - B5 C6 | D6 - - - B5 - G5 - | A5 - C6 - E6 D6 C6 - | A5 - - C6 - A5 C6 - | E6 - D6 - C6 - D6 E6 | G6 - - - D6 - . . | E6 - E6 D6 E6 - G6 - | F6 - E6 - C6 - A5 - | G5 - C6 - E6 - G6 - | D6 - B5 - G5 - B5 D6 | E6 - C6 - A5 - C6 E6 | F6 - - E6 - C6 A5 - | G5 - C6 - E6 - D6 C6 | B5 - - - D6 - . .';
+const HOOK = (() => { const toks = HOOK_SRC.split('|').map(b => b.trim().split(/\s+/)).flat(); const res = []; for (let i = 0; i < toks.length; i++) { const t = toks[i]; if (t === '-' || t === '.') { res.push(null); continue; } let len = 1; while (i + len < toks.length && toks[i + len] === '-') len++; res.push({ n: midi(t), len }); } return res; })();
+const PROG = ['Am', 'F', 'C', 'G', 'Am', 'F', 'C', 'G', 'Am', 'F', 'C', 'G', 'Am', 'F', 'C', 'G'];
+const ROOT = { Am: 45, F: 41, C: 48, G: 43 };
+const CHORD = { Am: [69, 72, 76], F: [65, 69, 72], C: [64, 67, 72], G: [67, 71, 74] };
 function musicInit(ctx) {
-  MUS.bus = ctx.createGain(); MUS.bus.gain.value = 0;
-  const hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 38; MUS.bus.connect(hp); hp.connect(AU.master);
-  const len = ctx.sampleRate * 3.4, ir = ctx.createBuffer(2, len, ctx.sampleRate);
-  for (let c = 0; c < 2; c++) { const d = ir.getChannelData(c); for (let i = 0; i < len; i++) { const k = i / len; d[i] = (Math.random() * 2 - 1) * Math.pow(1 - k, 2.2) * (i < ctx.sampleRate * .02 ? i / (ctx.sampleRate * .02) : 1); } }
-  const conv = ctx.createConvolver(); conv.buffer = ir; const send = ctx.createGain(); send.gain.value = .5; const damp = ctx.createBiquadFilter(); damp.type = 'lowpass'; damp.frequency.value = 5200;
-  MUS.bus.connect(send); send.connect(damp); damp.connect(conv); conv.connect(AU.master);
+  MUS.bus = ctx.createGain(); MUS.bus.gain.value = 0; MUS.bus.connect(AU.master);
+  MUS.duck = ctx.createGain(); MUS.duck.gain.value = 1; MUS.duck.connect(MUS.bus);
+  const len = ctx.sampleRate * 1.6, ir = ctx.createBuffer(2, len, ctx.sampleRate);
+  for (let c = 0; c < 2; c++) { const d = ir.getChannelData(c); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3); }
+  const conv = ctx.createConvolver(); conv.buffer = ir; const send = ctx.createGain(); send.gain.value = .22; MUS.bus.connect(send); send.connect(conv); conv.connect(AU.master);
 }
-function oEnv(g, t, a, peak, hold, rel) { g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(peak, t + a); g.gain.setValueAtTime(peak, t + Math.max(a, hold)); g.gain.linearRampToValueAtTime(0, t + Math.max(a, hold) + rel); }
-function oSaws(n, t, end, dets, vib) { const c = AU.ctx, arr = []; let vg = null; if (vib) { const l = c.createOscillator(); l.frequency.value = 4.8 + Math.random() * .9; vg = c.createGain(); vg.gain.setValueAtTime(0, t); vg.gain.linearRampToValueAtTime(7, t + .4); l.connect(vg); l.start(t); l.stop(end); }
-  for (const d of dets) { const o = c.createOscillator(); o.type = 'sawtooth'; o.frequency.setValueAtTime(hz(n), t); o.detune.value = d + (Math.random() - .5) * 4; if (vg) vg.connect(o.detune); o.start(t); o.stop(end); arr.push(o); } return arr; }
-function oChain(nodes, cut, q, g) { const c = AU.ctx, f = c.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = cut; f.Q.value = q; nodes.forEach(o => o.connect(f)); f.connect(g); g.connect(MUS.bus); return f; }
-function oStrings(n, t, dur, v, atk = .3, cut = 1900) { const g = AU.ctx.createGain(); oChain(oSaws(n, t, t + dur + 1, [-15, -6, 0, 6, 15], true), cut, .5, g); oEnv(g, t, atk, v, dur, .5); }
-function oSpicc(n, t, v, dur) { const g = AU.ctx.createGain(); oChain(oSaws(n, t, t + dur + .2, [-12, 0, 12], false), 2300, .7, g); oEnv(g, t, .006, v, dur * .35, dur * .7); }
-function oHorn(n, t, dur, v, section) {
-  const c = AU.ctx, g = c.createGain(), dets = section ? [-8, 0, 8] : [-3, 3];
-  const f = oChain(oSaws(n, t, t + dur + .6, dets, dur > .5), 350, 1.4, g);
-  f.frequency.setValueAtTime(320, t); f.frequency.linearRampToValueAtTime(1900, t + .11); f.frequency.setTargetAtTime(1250, t + .16, .35);
-  const sq = c.createOscillator(); sq.type = 'triangle'; sq.frequency.value = hz(n - 12); sq.start(t); sq.stop(t + dur + .6); const sg = c.createGain(); sg.gain.value = .5; sq.connect(sg); sg.connect(f);
-  oEnv(g, t, .08, v, dur - .05, .35);
+function eEnv(g, t, a, peak, hold, rel) { g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(peak, t + a); g.gain.setValueAtTime(peak, t + Math.max(a, hold)); g.gain.linearRampToValueAtTime(0, t + Math.max(a, hold) + rel); }
+function eOsc(type, n, t, end, detune = 0) { const o = AU.ctx.createOscillator(); o.type = type; o.frequency.setValueAtTime(hz(n), t); o.detune.value = detune; o.start(t); o.stop(end); return o; }
+function eNz(t, dur, v, f, type, q = .8, dest) { const c = AU.ctx, s = c.createBufferSource(); s.buffer = AU.noise; const fl = c.createBiquadFilter(); fl.type = type; fl.frequency.value = f; fl.Q.value = q; const g = c.createGain(); g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(.0005, t + dur); s.connect(fl); fl.connect(g); g.connect(dest || MUS.bus); s.start(t, Math.random() * 2); s.stop(t + dur + .02); }
+function eKick(t, v) {
+  const c = AU.ctx, o = c.createOscillator(), g = c.createGain(); o.type = 'sine'; o.frequency.setValueAtTime(155, t); o.frequency.exponentialRampToValueAtTime(48, t + .09);
+  g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(.0005, t + .32); o.connect(g); g.connect(MUS.bus); o.start(t); o.stop(t + .35); eNz(t, .012, v * .4, 3000, 'highpass');
+  const d = MUS.duck.gain; d.cancelScheduledValues(t); d.setValueAtTime(.22, t); d.linearRampToValueAtTime(1, t + .2);
 }
-function oBrassChord(notes, t, dur, v) { for (const n of notes) oHorn(n - 12, t, dur, v / notes.length * 1.6, true); }
-function oChoir(n, t, dur, v, vowel = 'ah') {
-  const c = AU.ctx, g = c.createGain(), mix = c.createGain(); const srcs = oSaws(n, t, t + dur + 1.2, [-10, 0, 10], true);
-  const F = vowel === 'ah' ? [[750, 7, 1], [1150, 8, .55], [2700, 9, .2]] : [[420, 7, 1], [800, 8, .5], [2400, 9, .12]];
-  for (const [fq, q, gv] of F) { const bp = c.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = fq; bp.Q.value = q; const bg = c.createGain(); bg.gain.value = gv; srcs.forEach(o => o.connect(bp)); bp.connect(bg); bg.connect(mix); }
-  mix.connect(g); g.connect(MUS.bus); oEnv(g, t, .7, v, dur, 1);
+function eClap(t, v) { for (let k = 0; k < 3; k++) eNz(t + k * .011, .03, v * .8, 1500, 'bandpass', 1.2); eNz(t + .033, .16, v, 1300, 'bandpass', 1); }
+function eHat(t, v, open) { eNz(t, open ? .14 : .03, v, 8500, 'highpass', .7); }
+function eBass(n, t, dur, v) {
+  const c = AU.ctx, g = c.createGain(), f = c.createBiquadFilter(); f.type = 'lowpass'; f.Q.value = 3; f.frequency.setValueAtTime(1400, t); f.frequency.exponentialRampToValueAtTime(260, t + dur);
+  [eOsc('sawtooth', n, t, t + dur + .05, -8), eOsc('sawtooth', n, t, t + dur + .05, 8)].forEach(o => o.connect(f)); f.connect(g);
+  const sg = c.createGain(); sg.gain.value = .6; eOsc('sine', n - 12, t, t + dur + .05).connect(sg); sg.connect(g);
+  g.connect(MUS.duck); eEnv(g, t, .005, v, dur * .6, dur * .35);
 }
-function oNz(t, dur, v, f, type, q = .8) { const c = AU.ctx, s = c.createBufferSource(); s.buffer = AU.noise; const fl = c.createBiquadFilter(); fl.type = type; fl.frequency.value = f; fl.Q.value = q; const g = c.createGain(); g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(.0005, t + dur); s.connect(fl); fl.connect(g); g.connect(MUS.bus); s.start(t, Math.random() * 2); s.stop(t + dur + .02); }
-function oTaiko(t, v, pitch = 1) { const c = AU.ctx, o = c.createOscillator(), g = c.createGain(); o.type = 'sine'; o.frequency.setValueAtTime(92 * pitch, t); o.frequency.exponentialRampToValueAtTime(42 * pitch, t + .4); g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(.0005, t + .85); o.connect(g); g.connect(MUS.bus); o.start(t); o.stop(t + .9); oNz(t, .09, v * .55, 420, 'lowpass'); }
-function oTimp(t, n, v) { const c = AU.ctx, o = c.createOscillator(), g = c.createGain(); o.type = 'triangle'; o.frequency.setValueAtTime(hz(n) * 1.04, t); o.frequency.exponentialRampToValueAtTime(hz(n), t + .07); g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(.0005, t + 1.5); o.connect(g); g.connect(MUS.bus); o.start(t); o.stop(t + 1.6); oNz(t, .06, v * .35, 700, 'lowpass'); }
-function oSnare(t, v) { oNz(t, .18, v, 2400, 'bandpass', .6); oNz(t, .05, v * .5, 5500, 'highpass'); }
-function oAnvil(t, v) { const c = AU.ctx; for (const [r, d, a] of [[1, .9, 1], [2.76, .6, .6], [5.4, .4, .4], [8.93, .25, .25]]) { const o = c.createOscillator(), g = c.createGain(); o.type = 'sine'; o.frequency.value = 820 * r; g.gain.setValueAtTime(v * a, t); g.gain.exponentialRampToValueAtTime(.0005, t + d); o.connect(g); g.connect(MUS.bus); o.start(t); o.stop(t + d + .05); } oNz(t, .03, v * .8, 6000, 'highpass'); }
-function oCymbal(t, v, swellDur) { const c = AU.ctx, s = c.createBufferSource(); s.buffer = AU.noise; const f = c.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = 5200; const g = c.createGain();
-  if (swellDur) { g.gain.setValueAtTime(.0005, t); g.gain.exponentialRampToValueAtTime(v, t + swellDur); g.gain.linearRampToValueAtTime(0, t + swellDur + .05); s.start(t, Math.random()); s.stop(t + swellDur + .1); }
-  else { g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(.0005, t + 2.4); s.start(t, Math.random()); s.stop(t + 2.5); }
-  s.connect(f); f.connect(g); g.connect(MUS.bus); }
+function eSaw(notes, t, dur, v, cut, attack = .01) { // supersaw chord
+  const c = AU.ctx, g = c.createGain(), f = c.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = cut; f.Q.value = .7;
+  for (const n of notes) for (const d of [-18, -7, 0, 7, 18]) eOsc('sawtooth', n, t, t + dur + .3, d).connect(f);
+  f.connect(g); g.connect(MUS.duck); eEnv(g, t, attack, v / notes.length, dur, .12);
+}
+function ePluck(n, t, v) { const c = AU.ctx, g = c.createGain(), f = c.createBiquadFilter(); f.type = 'lowpass'; f.Q.value = 4; f.frequency.setValueAtTime(4200, t); f.frequency.exponentialRampToValueAtTime(500, t + .14); eOsc('square', n, t, t + .25).connect(f); eOsc('sawtooth', n + 12, t, t + .25, 5).connect(f); f.connect(g); g.connect(MUS.bus); eEnv(g, t, .003, v, .02, .16); }
+function eLead(n, t, dur, v) {
+  const c = AU.ctx, g = c.createGain(), f = c.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 3600; f.Q.value = 1;
+  const os = [eOsc('sawtooth', n, t, t + dur + .2, -9), eOsc('sawtooth', n, t, t + dur + .2, 9), eOsc('square', n - 12, t, t + dur + .2)]; os.forEach(o => o.connect(f));
+  if (dur > .3) { const l = c.createOscillator(), lg = c.createGain(); l.frequency.value = 5.5; lg.gain.value = 14; l.connect(lg); os.forEach(o => lg.connect(o.detune)); l.start(t + .15); l.stop(t + dur); }
+  f.connect(g); g.connect(MUS.bus); eEnv(g, t, .01, v, dur - .03, .09);
+}
+function eRiser(t, dur, v) { const c = AU.ctx, s = c.createBufferSource(); s.buffer = AU.noise; const f = c.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 2; f.frequency.setValueAtTime(400, t); f.frequency.exponentialRampToValueAtTime(7000, t + dur); const g = c.createGain(); g.gain.setValueAtTime(.001, t); g.gain.exponentialRampToValueAtTime(v, t + dur); s.connect(f); f.connect(g); g.connect(MUS.bus); s.start(t, Math.random()); s.stop(t + dur + .02); }
+function eImpact(t, v) { eNz(t, 1.6, v * .5, 5000, 'highpass', .3); const c = AU.ctx, o = c.createOscillator(), g = c.createGain(); o.type = 'sine'; o.frequency.setValueAtTime(90, t); o.frequency.exponentialRampToValueAtTime(30, t + .8); g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(.0005, t + 1); o.connect(g); g.connect(MUS.bus); o.start(t); o.stop(t + 1.1); }
 function scheduleStep(s, t) {
-  const L = MUS.level, bar = Math.floor(s / SPB) % 16, q = s % SPB, beat = Math.floor(q / 3), sub = q % 3, ch = PROG[bar], sd = 60 / MUS.bpm / 3, barDur = sd * SPB, R = ROOT[ch];
-  const phraseEnd = bar % 4 === 3;
-  if (q === 0) {
-    // sustained strings + low choir drone, brass chords and upper choir as it builds
-    oStrings(R + 12, t, barDur, L ? .05 : .07, .5, 1200); for (const n of CHORD[ch]) oStrings(n - 12, t, barDur, L ? .022 : .03, .6, 1600);
-    if (L <= 1) oChoir(R + 24, t, barDur, .045, 'oh');
-    if (L >= 2) oBrassChord(CHORD[ch], t, barDur * .5, L >= 3 ? .09 : .07);
-    if (L >= 3 || (L >= 2 && bar >= 8)) for (const n of CHORD[ch]) oChoir(n, t, barDur, .045, 'ah');
-    if (L >= 1) oTimp(t, R + 12, L >= 2 ? .5 : .35);
-    if (L >= 2 && bar % 8 === 0) oCymbal(t, .09);
-  }
-  if (L >= 2 && bar % 8 === 7 && q === 9) oCymbal(t, .11, sd * 3);
-  // galloping low-string ostinato (the battle pulse)
-  const ost = [R + 12, R + 12, R + 24, R + 12];
-  if (L === 1 && sub === 0) oSpicc(ost[beat], t, .07, sd * 2.2);
-  if (L >= 2) { const n = ost[beat] + (sub === 2 ? 7 : 0); oSpicc(n, t, sub === 0 ? .085 : .055, sd * .9); if (L >= 3) oSpicc(n + 12, t, sub === 0 ? .05 : .03, sd * .9); }
-  // percussion
-  const tk = [[0], [0, 6], [0, 3, 6, 8, 9], [0, 2, 3, 5, 6, 8, 9, 11]][L];
-  if (tk.includes(q)) oTaiko(t, (q % 6 === 0 ? 1 : .6) * (L ? 1 : .75), q % 3 === 0 ? 1 : 1.3);
-  if (L >= 2 && (q === 3 || q === 9)) oSnare(t, .2); if (L >= 2 && (q === 11 || q === 5) && L >= 3) oSnare(t, .08);
-  if (L >= 3 && (q === 3 || q === 9)) oAnvil(t, .08);
-  if (L >= 1 && phraseEnd && q >= 6) { oTimp(t, R + 12 + (q % 2 ? 7 : 0), .18 + (q - 6) * .04); if (L >= 3) oSnare(t, .05 + (q - 6) * .02); }
-  // heroic horn theme
-  if (L >= 1 && sub === 0) { const ev = THEME[bar * 4 + beat]; if (ev) { const dur = ev.len * sd * 3 * .97;
-    if (L === 1) oHorn(ev.n - 12, t, dur, .07, false);
-    else { oHorn(ev.n, t, dur, L >= 3 ? .11 : .1, true); if (L >= 3) { oHorn(ev.n - 12, t, dur, .06, true); oStrings(ev.n + 12, t, dur, .03, .06, 3200); } } } }
+  const L = MUS.level, bar = Math.floor(s / 16) % 16, q = s % 16, ch = PROG[bar], sd = 60 / MUS.bpm / 4, e8 = sd * 2, R = ROOT[ch];
+  const build = L >= 2 && bar % 8 === 7;
+  // drums
+  if (q % 4 === 0 && !(build && q >= 12)) eKick(t, L ? .9 : .6);
+  if (L >= 1 && (q === 4 || q === 12) && !build) eClap(t, .32);
+  if (q % 4 === 2) eHat(t, L ? .13 : .07, L >= 1);
+  if (L >= 2 && q % 2 === 1) eHat(t, .045);
+  if (L >= 3 && q % 4 === 0) eHat(t, .05);
+  if (build) { if (q === 0) eRiser(t, sd * 16, .16); if (q >= 8) eClap(t, .08 + (q - 8) * .03); }
+  if (L >= 2 && bar % 8 === 0 && q === 0) eImpact(t, .5);
+  // bass: offbeat pump (rolling 16ths at the top level)
+  if (L >= 1 && q % 4 === 2) eBass(R, t, e8 * .9, .32);
+  if (L >= 3 && (q % 4 === 3)) eBass(R + 12, t, sd * .8, .18);
+  if (L === 0 && q === 0) eBass(R, t, sd * 14, .18);
+  // chords
+  if (q === 0) eSaw(CHORD[ch], t, sd * 15.5, L >= 2 ? .1 : .13, [650, 1100, 1800, 2600][L], L ? .02 : .25);
+  if (L >= 2 && (q === 2 || q === 6 || q === 10 || q === 14) && !build) eSaw(CHORD[ch], t, sd * 1.2, .16, 4200);
+  // arp
+  if (L >= 1) { const tones = CHORD[ch]; const pat = [0, 1, 2, 1, 0, 2, 1, 2]; if (L >= 2 || q % 2 === 0) ePluck(tones[pat[q % 8]] + (q >= 8 ? 12 : 0), t, L >= 2 ? .06 : .07); }
+  // lead hook
+  if (L >= 2 && q % 2 === 0) { const ev = HOOK[bar * 8 + q / 2]; if (ev) { const dur = ev.len * e8 * .95; eLead(ev.n, t, dur, .085); if (L >= 3) eLead(ev.n + 12, t, dur, .035); } }
 }
 function musicTick(dt) {
   const c = AU.ctx; if (!c || !MUS.bus) return;
-  const target = !MUS.on || AU.muted ? 0 : state.mode === 'play' ? .6 : state.mode === 'pause' ? .22 : .45;
+  const target = !MUS.on || AU.muted ? 0 : state.mode === 'play' ? .5 : state.mode === 'pause' ? .18 : .38;
   MUS.bus.gain.setTargetAtTime(target, c.currentTime, .4);
   if (!MUS.on || MUS.jingle > c.currentTime) return;
   if (MUS.next < c.currentTime) MUS.next = c.currentTime + .05;
-  while (MUS.next < c.currentTime + .18) {
-    if (MUS.step % SPB === 0) { if (MUS.want !== MUS.level && (MUS.wantT > 1.5 || MUS.want > MUS.level + 1)) MUS.level = MUS.want; MUS.bpm = BPMS[MUS.level]; }
-    scheduleStep(MUS.step, MUS.next); MUS.next += 60 / MUS.bpm / 3; MUS.step = (MUS.step + 1) % (SPB * 16);
+  while (MUS.next < c.currentTime + .16) {
+    if (MUS.step % 16 === 0) { if (MUS.want !== MUS.level && (MUS.wantT > 1.5 || MUS.want > MUS.level + 1)) MUS.level = MUS.want; MUS.bpm = BPMS[MUS.level]; }
+    scheduleStep(MUS.step, MUS.next); MUS.next += 60 / MUS.bpm / 4; MUS.step = (MUS.step + 1) % 256;
   }
 }
 function battleIntensity() {
@@ -566,15 +560,9 @@ function updateMusicLevel(dt) {
   if (w !== MUS.want) { MUS.want = w; MUS.wantT = 0; } else MUS.wantT += dt;
 }
 function jingle(win) {
-  const c = AU.ctx; if (!c || !MUS.bus || !MUS.on) return; const t = c.currentTime + .05, b = .26;
-  if (win) { // horns rise into a D-major finish
-    [[62, 0, 1], [69, 1, 1], [74, 2, 1.5], [78, 3.5, .5], [81, 4, 6]].forEach(([n, at, l]) => oHorn(n, t + at * b, l * b, .12, true));
-    [[50, 57, 62, 66]].forEach(ch => ch.forEach(n => oStrings(n, t + 4 * b, 6 * b, .05, .1, 2600))); [62, 66, 69].forEach(n => oChoir(n + 12, t + 4 * b, 6 * b, .06));
-    oTimp(t, 50, .6); oTimp(t + 4 * b, 50, .8); oTaiko(t + 4 * b, 1); oCymbal(t + 4 * b, .14); MUS.jingle = t + 12 * b;
-  } else {
-    [[69, 0, 2], [67, 2, 2], [65, 4, 2], [62, 6, 6]].forEach(([n, at, l]) => oHorn(n - 12, t + at * b, l * b, .09, false));
-    [38, 50, 53, 57].forEach(n => oStrings(n, t + 6 * b, 6 * b, .06, .6, 1200)); [62, 65].forEach(n => oChoir(n, t + 6 * b, 6 * b, .05, 'oh')); oTaiko(t + 6 * b, 1, .8); MUS.jingle = t + 13 * b;
-  }
+  const c = AU.ctx; if (!c || !MUS.bus || !MUS.on) return; const t = c.currentTime + .05, b = .12;
+  if (win) { [69, 72, 76, 81, 76, 81, 84, 88].forEach((n, i) => ePluck(n, t + i * b, .1)); eSaw([69, 72, 76], t + 8 * b, 1.4, .18, 3500, .01); eKick(t + 8 * b, 1); eImpact(t + 8 * b, .5); eLead(88, t + 8 * b, 1.2, .08); MUS.jingle = t + 8 * b + 1.8; }
+  else { [76, 74, 72, 69, 67, 64].forEach((n, i) => ePluck(n, t + i * b * 1.6, .09)); eSaw([57, 60, 64], t + 10 * b, 1.6, .14, 900, .2); MUS.jingle = t + 10 * b + 2; }
   MUS.step = 0; MUS.level = 0; MUS.want = 0;
 }
 function toggleMusic() { MUS.on = !MUS.on; const b = $('#bMusic'); if (b) b.textContent = 'Music: ' + (MUS.on ? 'on' : 'off'); setHint('Music ' + (MUS.on ? 'on' : 'off'), 1); }
