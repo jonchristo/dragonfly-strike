@@ -9,6 +9,7 @@ A browser game built with Three.js, inspired by the 16-bit helicopter games Dese
 | `index.html` | 1 · Dragonfly Strike | A dragonfly gunship defends the Bug Kingdom from ant legions in a garden. Missions, winching, destructible garden, lawnmower, level-ups, bosses. |
 | `garden-front.html` | 2 · Garden Front | Air support over a live ant-vs-ladybug ground war. Five control points, a tug-of-war battle meter, command points, battalion drops, acorn artillery and bumblebee bombers. |
 | `rotorwash.html` | 3 · Rotorwash | Red-vs-blue combined-arms sim: fly an Apache over infantry, MG, AT, mortar, tank, AA and artillery units. Ragdoll physics, flying debris, flares vs SAMs, air assault / artillery / air strike call-ins. |
+| `arcane-front/` | 4 · Arcane Front | Minecraft-style voxel war: a battlemage conquers faction villages across five biomes with guns, spells, building, airstrikes, artillery and forward operating bases. |
 
 ## Play in the browser
 
@@ -17,6 +18,7 @@ Once GitHub Pages is on for this repo (Settings → Pages → Deploy from branch
 - Version 1: https://jonchristo.github.io/dragonfly-strike/
 - Version 2: https://jonchristo.github.io/dragonfly-strike/garden-front.html
 - Version 3: https://jonchristo.github.io/dragonfly-strike/rotorwash.html
+- Version 4: https://jonchristo.github.io/dragonfly-strike/arcane-front/
 
 ## Controls (Xbox)
 
