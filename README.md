@@ -1,27 +1,38 @@
-# Dragonfly Strike
+# Jon's Games
 
-A browser game built with Three.js, inspired by the 16-bit helicopter games Desert Strike and Jungle Strike. Each version is a single self-contained HTML file: open it in Chrome or Edge and play. Xbox controllers work (plug in and press any button); keyboard and touch are supported too.
+Browser games built with Three.js. Each one is a single HTML file you can open and play: no install, works offline once loaded, and Xbox controllers are supported (keyboard and mouse too).
 
-## Versions
+All games are in the [`games/`](games/) folder:
 
-| File | Version | What it is |
-|---|---|---|
-| `index.html` | 1 · Dragonfly Strike | A dragonfly gunship defends the Bug Kingdom from ant legions in a garden. Missions, winching, destructible garden, lawnmower, level-ups, bosses. |
-| `garden-front.html` | 2 · Garden Front | Air support over a live ant-vs-ladybug ground war. Five control points, a tug-of-war battle meter, command points, battalion drops, acorn artillery and bumblebee bombers. |
-| `rotorwash.html` | 3 · Rotorwash | Red-vs-blue combined-arms sim: fly an Apache over infantry, MG, AT, mortar, tank, AA and artillery units. Ragdoll physics, flying debris, flares vs SAMs, air assault / artillery / air strike call-ins. |
-| `arcane-front/` | 4 · Arcane Front | Mech combat over a Wisconsin-shaped voxel map: stomp through towns in walk mode or hover on jets, fire pulse lasers, homing missiles, a rail lance and a plasma saber, and fight enemy war mechs to retake 12 towns. |
+| # | Game | Style | Play it |
+|---|---|---|---|
+| 1 | [Dragonfly Strike](games/dragonfly-strike/) | Helicopter action in a garden | `games/dragonfly-strike/index.html` |
+| 2 | [Garden Front](games/garden-front/) | Air support over a bug ground war | `games/garden-front/index.html` |
+| 3 | [Rotorwash](games/rotorwash/) | Apache over a combined-arms battlefield | `games/rotorwash/index.html` |
+| 4 | [Arcane Front](games/arcane-front/) | Mech combat across a voxel Wisconsin | `games/arcane-front/index.html` |
 
 ## Play in the browser
 
-Once GitHub Pages is on for this repo (Settings → Pages → Deploy from branch → `main` / root):
+Turn on GitHub Pages once (Settings → Pages → Deploy from a branch → `main` / root). Then:
 
-- Version 1: https://jonchristo.github.io/dragonfly-strike/
-- Version 2: https://jonchristo.github.io/dragonfly-strike/garden-front.html
-- Version 3: https://jonchristo.github.io/dragonfly-strike/rotorwash.html
-- Version 4: https://jonchristo.github.io/dragonfly-strike/arcane-front/
+- Game launcher: https://jonchristo.github.io/dragonfly-strike/
+- Dragonfly Strike: https://jonchristo.github.io/dragonfly-strike/games/dragonfly-strike/
+- Garden Front: https://jonchristo.github.io/dragonfly-strike/games/garden-front/
+- Rotorwash: https://jonchristo.github.io/dragonfly-strike/games/rotorwash/
+- Arcane Front: https://jonchristo.github.io/dragonfly-strike/games/arcane-front/
 
-## Controls (Xbox)
+## Play on your computer
 
-- Left stick: fly · Right stick: aim/rotate · LB/RB: spin · LT: hold heading
-- RT or A: gun · X: bomb/rockets · B: missile
-- D-pad ◀ ▶ + Y: choose and call in support (versions 2+) · Menu: pause
+Download the repo (Code → Download ZIP), unzip it, and double-click `index.html` at the top level for the launcher, or any game's `index.html` inside `games/`.
+
+## Repo layout
+
+```
+index.html              ← launcher page with a card for every game
+games/
+  README.md             ← list of games
+  dragonfly-strike/     ← game 1
+  garden-front/         ← game 2
+  rotorwash/            ← game 3
+  arcane-front/         ← game 4
+```

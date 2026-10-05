@@ -1,5 +1,7 @@
 # Arcane Front
 
+**Game 4 · Mech combat across a voxel Wisconsin**
+
 A mech combat game in a Minecraft-style voxel world shaped like Wisconsin. You pilot the Arcane Vanguard's MK-7 assault mech against three ridiculous militias (the Bratwurst Brigade, the Supper Club Syndicate and the Cheddar Cartel) and the war mechs they drop in without warning. Retake all twelve strongholds to win.
 
 ## The mech
