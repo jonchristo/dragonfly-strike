@@ -10,7 +10,7 @@
 /* Layout: one column of game cards, each a "cartridge" with its number, name, pitch and a play button */
 :root{
   --bg:#0b1118; --card:#121b25; --line:rgba(150,200,240,.16); --text:#e7eff7; --muted:#8ea5ba;
-  --c1:#7fd36a; --c2:#f2b134; --c3:#ff5a47; --c4:#5cd0ff;
+  --c1:#7fd36a; --c2:#f2b134; --c3:#ff5a47; --c4:#5cd0ff; --c5:#ff8a3a;
   --f-display:'Silkscreen',ui-monospace,'Courier New',monospace;
   --f-body:'Chakra Petch',system-ui,-apple-system,'Segoe UI',sans-serif;
   color-scheme:dark;
@@ -64,6 +64,11 @@ footer kbd{font-family:var(--f-display);font-size:11px;border:1px solid var(--li
       <div class="num">4</div>
       <div class="info"><h2>Arcane Front</h2><p>Minecraft-style mech combat across a voxel Wisconsin: stomp through towns or hover on jets, fire lasers and homing missiles, and fight enemy war mechs.</p><div class="tags"><span>Mech</span><span>Voxel world</span><span>Open map</span></div></div>
       <a class="play" href="games/arcane-front/index.html">Play</a>
+    </li>
+    <li class="game" style="--accent:var(--c5)">
+      <div class="num">5</div>
+      <div class="info"><h2>Arcane Overdrive</h2><p>The destruction fork of Arcane Front: meteor-drop onto war mechs, shoulder-charge through hills, bring towers down, all to a live techno soundtrack.</p><div class="tags"><span>Mech</span><span>Destruction</span><span>Techno</span></div></div>
+      <a class="play" href="games/arcane-overdrive/index.html">Play</a>
     </li>
   </ol>
   <footer>Controller tip: plug in an Xbox controller and press any button once the game loads. <kbd>Menu</kbd> pauses in every game.</footer>

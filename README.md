@@ -10,6 +10,7 @@ All games are in the [`games/`](games/) folder:
 | 2 | [Garden Front](games/garden-front/) | Air support over a bug ground war | `games/garden-front/index.html` |
 | 3 | [Rotorwash](games/rotorwash/) | Apache over a combined-arms battlefield | `games/rotorwash/index.html` |
 | 4 | [Arcane Front](games/arcane-front/) | Mech combat across a voxel Wisconsin | `games/arcane-front/index.html` |
+| 5 | [Arcane Overdrive](games/arcane-overdrive/) | Destruction mech brawler with a techno soundtrack | `games/arcane-overdrive/index.html` |
 
 ## Play in the browser
 
@@ -20,6 +21,7 @@ Turn on GitHub Pages once (Settings → Pages → Deploy from a branch → `main
 - Garden Front: https://jonchristo.github.io/dragonfly-strike/games/garden-front/
 - Rotorwash: https://jonchristo.github.io/dragonfly-strike/games/rotorwash/
 - Arcane Front: https://jonchristo.github.io/dragonfly-strike/games/arcane-front/
+- Arcane Overdrive: https://jonchristo.github.io/dragonfly-strike/games/arcane-overdrive/
 
 ## Play on your computer
 
@@ -35,4 +37,5 @@ games/
   garden-front/         ← game 2
   rotorwash/            ← game 3
   arcane-front/         ← game 4
+  arcane-overdrive/     ← game 5
 ```

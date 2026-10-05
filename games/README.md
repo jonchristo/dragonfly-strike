@@ -8,5 +8,6 @@ Every game lives in its own folder. Open the folder, then open `index.html` in C
 | 2 | **Garden Front** | [`garden-front/`](garden-front/) | The sequel: fly air support over a live ant-vs-ladybug ground war and call in artillery and bomber runs. |
 | 3 | **Rotorwash** | [`rotorwash/`](rotorwash/) | Apache attack helicopter over a red-vs-blue combined-arms battle with tanks, SAMs, ragdolls and air strikes. |
 | 4 | **Arcane Front** | [`arcane-front/`](arcane-front/) | Minecraft-style mech combat across Wisconsin: stomp or hover, lasers and homing missiles, enemy war mechs. |
+| 5 | **Arcane Overdrive** | [`arcane-overdrive/`](arcane-overdrive/) | The destruction fork of Arcane Front: meteor drops, shoulder charges, collapsing buildings, stagger fights and a live techno soundtrack. |
 
 Each folder has its own README with the full controls.
