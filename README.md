@@ -11,6 +11,7 @@ All games are in the [`games/`](games/) folder:
 | 3 | [Rotorwash](games/rotorwash/) | Apache over a combined-arms battlefield | `games/rotorwash/index.html` |
 | 4 | [Arcane Front](games/arcane-front/) | Mech combat across a voxel Wisconsin | `games/arcane-front/index.html` |
 | 5 | [Arcane Overdrive](games/arcane-overdrive/) | Destruction mech brawler with a techno soundtrack | `games/arcane-overdrive/index.html` |
+| 6 | [Arcane Armada](games/arcane-armada/) | Mothership war over a zoned Wisconsin | `games/arcane-armada/index.html` |
 
 ## Play in the browser
 
@@ -22,6 +23,7 @@ Turn on GitHub Pages once (Settings → Pages → Deploy from a branch → `main
 - Rotorwash: https://jonchristo.github.io/dragonfly-strike/games/rotorwash/
 - Arcane Front: https://jonchristo.github.io/dragonfly-strike/games/arcane-front/
 - Arcane Overdrive: https://jonchristo.github.io/dragonfly-strike/games/arcane-overdrive/
+- Arcane Armada: https://jonchristo.github.io/dragonfly-strike/games/arcane-armada/
 
 ## Play on your computer
 
@@ -38,4 +40,9 @@ games/
   rotorwash/            ← game 3
   arcane-front/         ← game 4
   arcane-overdrive/     ← game 5
+  arcane-armada/        ← game 6
 ```
+
+## Versions
+
+Each published build is tagged in git, for example `arcane-overdrive-v1`, `arcane-overdrive-v2` and `arcane-armada-v1`. Open **Tags** on GitHub to download any earlier version.

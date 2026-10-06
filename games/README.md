@@ -9,5 +9,10 @@ Every game lives in its own folder. Open the folder, then open `index.html` in C
 | 3 | **Rotorwash** | [`rotorwash/`](rotorwash/) | Apache attack helicopter over a red-vs-blue combined-arms battle with tanks, SAMs, ragdolls and air strikes. |
 | 4 | **Arcane Front** | [`arcane-front/`](arcane-front/) | Minecraft-style mech combat across Wisconsin: stomp or hover, lasers and homing missiles, enemy war mechs. |
 | 5 | **Arcane Overdrive** | [`arcane-overdrive/`](arcane-overdrive/) | The destruction fork of Arcane Front: meteor drops, shoulder charges, collapsing buildings, stagger fights and a live techno soundtrack. |
+| 6 | **Arcane Armada** | [`arcane-armada/`](arcane-armada/) | The mothership fork of Overdrive: hold 70% of Wisconsin to drop the enemy mothership's shield, then destroy its reactors. Realistically zoned cities, suburbs and farm country. |
 
 Each folder has its own README with the full controls.
+
+## Older versions
+
+Forks never replace each other: every game above stays playable as it was. Every published build is also tagged in git (see the repo's **Tags** list), so you can download any earlier version as a ZIP.
