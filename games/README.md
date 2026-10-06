@@ -15,4 +15,4 @@ Each folder has its own README with the full controls.
 
 ## Older versions
 
-Forks never replace each other: every game above stays playable as it was. Every published build is also tagged in git (see the repo's **Tags** list), so you can download any earlier version as a ZIP.
+Forks never replace each other: every game above stays playable as it was. Every published build is also saved as a `versions/…` branch, so you can download any earlier version as a ZIP.

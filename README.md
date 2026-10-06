@@ -45,4 +45,4 @@ games/
 
 ## Versions
 
-Each published build is tagged in git, for example `arcane-overdrive-v1`, `arcane-overdrive-v2` and `arcane-armada-v1`. Open **Tags** on GitHub to download any earlier version.
+Each published build is saved as a branch under `versions/`, for example `versions/arcane-overdrive-v1`, `versions/arcane-overdrive-v2` and `versions/arcane-armada-v1`. Switch to one in GitHub's branch menu, then use Code → Download ZIP to get that exact build.
