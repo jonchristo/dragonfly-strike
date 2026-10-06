@@ -13,6 +13,10 @@ Same mech, same voxel Wisconsin, safety limiters off. Everything breaks, buildin
 - **Rampage meter:** destruction and kills raise it up to ×5 for more damage and supply, with demolition bonuses every 250 blocks.
 - **Stagger:** break a war mech's stagger gauge with charges, drops and heavy hits to stun it and deal 60% extra damage. Brawler mechs rush you head-on.
 - **Juice:** brighter lasers, bigger explosions with shockwave rings, screen flash, hit-pause, speed lines.
+- **Shock troopers:** every faction's infantry wears armored shock-trooper kit (sealed helmets with glowing visors, chest plates, capes in faction colors) instead of riot gear.
+- **Gunships stay:** squads you call in arrive by gunship, and the gunship stays on station over the drop zone as airborne support. It fires a chin machine gun and a sweeping laser until it is shot down.
+- **Enemy assault waves:** when the battle swings too far one way, enemy assault gunships drop troops on your strongholds. A third of each drop carries anti-air launchers that hunt your gunships. If you are losing badly, Vanguard sends you a reinforcement gunship.
+- **Fortified FOBs:** each FOB comes with a heavy machine gun nest and an artillery piece, and deploys 2 machine gunners, 2 snipers and 2 anti-air troopers every 30 seconds.
 - **Techno soundtrack:** procedural, 136 BPM, four intensity levels that follow the action. N toggles it.
 
 ## Controls
